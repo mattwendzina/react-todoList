@@ -1,0 +1,42 @@
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  flex-direction: column;
+  height: 600px;
+  width: 400px;
+  margin: 0 auto;
+}
+
+.showTodoItem {
+  display: flex;
+  justify-content: center;
+}
+
+.hideTodoItem {
+  display: none;
+}
+
+.editTextHidden {
+  display: none;
+}
+
+.editTextDisplay {
+  display: inline-block;
+}
+
+li {
+  list-style-type: none;
+}
+
+li.complete {
+  color: green;
+  text-decoration: line-through;
+}
+li.incomplete {
+  color: red;
+}
+
+button {
+  height: 35px;
+}

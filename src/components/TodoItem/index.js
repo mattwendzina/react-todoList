@@ -8,14 +8,6 @@ class TodoItem extends React.Component {
     super(props);
     this.state = {};
   }
-  myInput = React.createRef();
-
-  getFocus = () => {
-    debugger;
-    const input = this.myInput.current;
-    console.log(input);
-    input.focus();
-  };
 
   render() {
     return this.props.todos.map((todoItem, idx) => {
@@ -36,10 +28,10 @@ class TodoItem extends React.Component {
             </Button>
 
             <label
-              onDoubleClick={() => {
+              onDoubleClick={event => {
                 const { toggleEdit } = this.props;
                 toggleEdit(idx);
-                this.getFocus();
+                this.props.getFocus(event);
               }}
             >
               {todoItem.todo}
@@ -57,7 +49,7 @@ class TodoItem extends React.Component {
             className={
               todoItem.selected ? CSS.editTextDisplay : CSS.editTextHidden
             }
-            ref={this.myInput}
+            ref={this.props.myInput}
             style={{ width: "218px", height: "35px" }}
             value={this.props.todos[idx].todo}
             onBlur={() => this.props.toggleEdit(idx)}

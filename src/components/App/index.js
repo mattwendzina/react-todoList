@@ -20,6 +20,7 @@ const jss = create({
 class App extends Component {
   constructor(props) {
     super(props);
+    this.myInput = React.createRef();
     this.state = {
       textInput: "",
       todos: []
@@ -86,6 +87,15 @@ class App extends Component {
     );
   };
 
+  getFocus = event => {
+    // listItem grabs the input element to ensure the correct element gets focus() applied
+    const listItem = event.target.parentNode.parentNode.childNodes[1];
+    console.log(listItem);
+    setTimeout(function() {
+      listItem.focus();
+    }, 1);
+  };
+
   todoComplete = idx => {
     const toChange = this.state.todos[idx];
     this.setState(state => ({
@@ -118,6 +128,8 @@ class App extends Component {
             toggleEdit={this.toggleEdit}
             textInputValue={this.state.textInput}
             textInput={this.textInput}
+            myInput={this.myInput}
+            getFocus={this.getFocus}
           />
         </div>
       </JssProvider>

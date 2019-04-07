@@ -8,7 +8,9 @@ const TodoList = props => {
     deleteTodo,
     toggleEdit,
     textInputValue,
-    textInput
+    textInput,
+    myInput,
+    getFocus
   } = props;
   return (
     <>
@@ -20,6 +22,8 @@ const TodoList = props => {
           toggleEdit={toggleEdit}
           textInput={textInput}
           textInputValue={textInputValue}
+          myInput={myInput}
+          getFocus={getFocus}
         />
       </form>
     </>

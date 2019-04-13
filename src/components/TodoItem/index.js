@@ -6,11 +6,23 @@ import CSS from "./todoItem.module.css";
 class TodoItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      changeItemWithEnterKey: false
+    };
   }
 
   render() {
-    return this.props.todos.map((todoItem, idx) => {
+    const {
+      todos,
+      todoComplete,
+      toggleEdit,
+      getFocus,
+      deleteTodo,
+      myInput,
+      editTextInput,
+      updateItem
+    } = this.props;
+    return todos.map((todoItem, idx) => {
       return (
         <li
           key={todoItem.id}
@@ -22,16 +34,18 @@ class TodoItem extends React.Component {
             <Button
               color="primary"
               variant="raised"
-              onClick={() => this.props.todoComplete(idx)}
+              onClick={() => todoComplete(idx)}
             >
               Complete
             </Button>
 
             <label
               onDoubleClick={event => {
-                const { toggleEdit } = this.props;
-                toggleEdit(idx);
-                this.props.getFocus(event);
+                toggleEdit(event, idx);
+                getFocus(event);
+                this.setState(() => ({
+                  changeItemWithEnterKey: false
+                }));
               }}
             >
               {todoItem.todo}
@@ -40,7 +54,7 @@ class TodoItem extends React.Component {
             <Button
               color="secondary"
               variant="raised"
-              onClick={() => this.props.deleteTodo(idx)}
+              onClick={() => deleteTodo(idx)}
             >
               Delete
             </Button>
@@ -49,10 +63,27 @@ class TodoItem extends React.Component {
             className={
               todoItem.selected ? CSS.editTextDisplay : CSS.editTextHidden
             }
-            ref={this.props.myInput}
+            ref={myInput}
             style={{ width: "218px", height: "35px" }}
-            value={this.props.todos[idx].todo}
-            onBlur={() => this.props.toggleEdit(idx)}
+            value={editTextInput}
+            onChange={event => {
+              updateItem(event, idx);
+            }}
+            onKeyDown={event => {
+              if (event.key === "Enter") {
+                this.setState(state => ({
+                  changeItemWithEnterKey: !state.changeItemWithEnterKey
+                }));
+              }
+              toggleEdit(event, idx);
+            }}
+            onBlur={
+              !this.state.changeItemWithEnterKey
+                ? event => {
+                    toggleEdit(event, idx);
+                  }
+                : null
+            }
           />
         </li>
       );

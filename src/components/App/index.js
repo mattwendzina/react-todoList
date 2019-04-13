@@ -23,6 +23,8 @@ class App extends Component {
     this.myInput = React.createRef();
     this.state = {
       textInput: "",
+      editTextInput: "",
+      nowEditing: null,
       todos: []
     };
   }
@@ -38,6 +40,7 @@ class App extends Component {
   }
 
   textInput = e => {
+    // console.log(e.target.value);
     const { value } = e.target;
     this.setState(() => ({
       textInput: value
@@ -67,15 +70,52 @@ class App extends Component {
       this.updateLocalStorage
     );
   };
-  toggleEdit = idx => {
+
+  updateItem = (e, idx) => {
+    const newValue = e.target.value;
+    const currentValue = this.state.todos[idx];
+
+    this.setState(
+      state => ({
+        editTextInput: newValue,
+        todos: [
+          ...state.todos.slice(0, idx),
+          { ...currentValue, todo: newValue },
+          ...state.todos.slice(idx + 1)
+        ]
+      }),
+      this.updateLocalStorage
+    );
+  };
+
+  toggleEdit = (e, idx) => {
+    // e.key and e.key!== checks to see if a key has been pressed/isn't enter and then returns
+    if (e.key && e.key !== "Enter") {
+      return;
+    }
+
     const toChange = this.state.todos[idx];
-    this.setState(state => ({
-      todos: [
-        ...state.todos.slice(0, idx),
-        { ...toChange, selected: !toChange.selected },
-        ...state.todos.slice(idx + 1)
-      ]
-    }));
+    const nowEditing = !this.state.nowEditing ? this.state.todos[idx].id : null;
+    const editTextInput = !this.state.nowEditing
+      ? this.state.todos[idx].todo
+      : "";
+    this.setState(
+      state => ({
+        todos: [
+          ...state.todos.slice(0, idx),
+          { ...toChange, selected: !toChange.selected },
+          ...state.todos.slice(idx + 1)
+        ],
+        nowEditing: nowEditing,
+        editTextInput: editTextInput
+      }),
+      () => {
+        if (this.state.todos[idx].todo === "") {
+          this.deleteTodo(idx);
+        }
+      },
+      this.updateLocalStorage
+    );
   };
 
   deleteTodo = idx => {
@@ -90,7 +130,7 @@ class App extends Component {
   getFocus = event => {
     // listItem grabs the input element to ensure the correct element gets focus() applied
     const listItem = event.target.parentNode.parentNode.childNodes[1];
-    console.log(listItem);
+    // set timeout added because it otherwise doesn't hold focus long enough. I think it applies focus, then re-renders the page view and loses focus. This means it waits before settings focus.
     setTimeout(function() {
       listItem.focus();
     }, 1);
@@ -127,9 +167,11 @@ class App extends Component {
             deleteTodo={this.deleteTodo}
             toggleEdit={this.toggleEdit}
             textInputValue={this.state.textInput}
-            textInput={this.textInput}
+            updateItem={this.updateItem}
+            textInput={this.state.textInput}
             myInput={this.myInput}
             getFocus={this.getFocus}
+            editTextInput={this.state.editTextInput}
           />
         </div>
       </JssProvider>

@@ -9,6 +9,8 @@ const TodoList = props => {
     toggleEdit,
     textInputValue,
     textInput,
+    editTextInput,
+    updateItem,
     myInput,
     getFocus
   } = props;
@@ -21,7 +23,9 @@ const TodoList = props => {
           deleteTodo={deleteTodo}
           toggleEdit={toggleEdit}
           textInput={textInput}
+          updateItem={updateItem}
           textInputValue={textInputValue}
+          editTextInput={editTextInput}
           myInput={myInput}
           getFocus={getFocus}
         />

@@ -109,13 +109,11 @@ class App extends Component {
         nowEditing: nowEditing,
         editTextInput: editTextInput
       }),
-      () => {
-        if (this.state.todos[idx].todo === "") {
-          this.deleteTodo(idx);
-        }
-      },
       this.updateLocalStorage
     );
+    if (this.state.todos[idx].todo === "") {
+      this.deleteTodo(idx);
+    }
   };
 
   deleteTodo = idx => {
@@ -157,6 +155,7 @@ class App extends Component {
         <div className="App">
           <Navbar />
           <Input
+            style={{ borderRadius: "5px" }}
             textInput={this.textInput}
             addItem={this.addItem}
             textInputValue={this.state.textInput}

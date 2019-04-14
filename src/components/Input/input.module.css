@@ -1,11 +1,19 @@
 .inputContainer {
-  margin: 20px;
+  display: flex;
+  width: 40%;
+  margin: 0 auto;
+  position: relative;
 }
 
 .textInput {
-  margin: 0 10px;
+  flex: 1;
+  height: 50px;
 }
 
 .button {
+  position: absolute;
   height: 38px;
+  right: -120px;
+  top: 50%;
+  transform: translateY(-50%);
 }

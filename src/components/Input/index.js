@@ -12,7 +12,7 @@ const Input = props => {
           className={CSS.textInput}
           onChange={textInput}
           onKeyUp={addItem}
-          placeholder={"enter todo"}
+          placeholder={"Enter todo"}
           value={textInputValue}
         />
         <Button

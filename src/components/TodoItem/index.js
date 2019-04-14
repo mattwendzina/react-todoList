@@ -3,6 +3,12 @@ import Button from "@material-ui/core/Button";
 
 import CSS from "./todoItem.module.css";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faCheckCircle, faTrash);
+
 class TodoItem extends React.Component {
   constructor(props) {
     super(props);
@@ -24,22 +30,24 @@ class TodoItem extends React.Component {
     } = this.props;
     return todos.map((todoItem, idx) => {
       return (
-        <li
-          key={todoItem.id}
-          className={todoItem.complete ? CSS.complete : CSS.incomplete}
-        >
+        <li key={todoItem.id}>
           <div
             className={!todoItem.selected ? CSS.showTodoItem : CSS.hideTodoItem}
           >
-            <Button
-              color="primary"
-              variant="raised"
-              onClick={() => todoComplete(idx)}
-            >
-              Complete
-            </Button>
+            <div className={CSS.completeContainer}>
+              <FontAwesomeIcon
+                icon="check-circle"
+                className={
+                  todoItem.complete ? CSS.completeButton : CSS.incompleteButton
+                }
+                onClick={() => todoComplete(idx)}
+              />
+            </div>
 
             <label
+              className={
+                todoItem.complete ? CSS.itemComplete : CSS.itemIncomplete
+              }
               onDoubleClick={event => {
                 toggleEdit(event, idx);
                 getFocus(event);
@@ -51,20 +59,20 @@ class TodoItem extends React.Component {
               {todoItem.todo}
             </label>
 
-            <Button
+            <FontAwesomeIcon
+              style={{ color: "gainsboro" }}
+              icon={"trash"}
+              className={CSS.deleteButton}
               color="secondary"
               variant="raised"
               onClick={() => deleteTodo(idx)}
-            >
-              Delete
-            </Button>
+            />
           </div>
           <input
             className={
               todoItem.selected ? CSS.editTextDisplay : CSS.editTextHidden
             }
             ref={myInput}
-            style={{ width: "218px", height: "35px" }}
             value={editTextInput}
             onChange={event => {
               updateItem(event, idx);

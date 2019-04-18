@@ -12,7 +12,8 @@ const TodoList = props => {
     editTextInput,
     updateItem,
     myInput,
-    getFocus
+    getFocus,
+    filterCompleted
   } = props;
   return (
     <>
@@ -28,6 +29,7 @@ const TodoList = props => {
           editTextInput={editTextInput}
           myInput={myInput}
           getFocus={getFocus}
+          filterCompleted={filterCompleted}
         />
       </form>
     </>

@@ -172,6 +172,7 @@ class App extends Component {
             getFocus={this.getFocus}
             editTextInput={this.state.editTextInput}
           />
+          <button filterComplete={this.filterComplete} />
         </div>
       </JssProvider>
     );

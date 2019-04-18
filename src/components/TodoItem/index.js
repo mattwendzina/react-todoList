@@ -104,7 +104,6 @@ class TodoItem extends React.Component {
       });
     } else {
       const filtered = todos.filter(todoItem => !todoItem.complete);
-      console.log(filtered);
 
       return filtered.map((todoItem, idx) => {
         return (

@@ -25,6 +25,7 @@ class App extends Component {
       textInput: "",
       editTextInput: "",
       nowEditing: null,
+      filterCompleted: false,
       todos: []
     };
   }
@@ -145,6 +146,12 @@ class App extends Component {
     }));
   };
 
+  filterCompleted = () => {
+    this.setState(() => ({
+      filterCompleted: !this.state.filterCompleted
+    }));
+  };
+
   updateLocalStorage = () => {
     localStorage.setItem("todos", JSON.stringify(this.state.todos));
   };
@@ -171,8 +178,9 @@ class App extends Component {
             myInput={this.myInput}
             getFocus={this.getFocus}
             editTextInput={this.state.editTextInput}
+            filterCompleted={this.state.filterCompleted}
           />
-          <button filterComplete={this.filterComplete} />
+          <button onClick={this.filterCompleted}>Filter Completed</button>
         </div>
       </JssProvider>
     );

@@ -8,7 +8,7 @@ import Navbar from "../Navbar";
 import { create } from "jss";
 import JssProvider from "react-jss/lib/JssProvider";
 import { createGenerateClassName, jssPreset } from "@material-ui/core/styles";
-import { CSSTransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 
 // This function enables material UI to be moved higher in the html <head> to allow for custom CSS to take priority
 const generateClassName = createGenerateClassName();
@@ -23,6 +23,7 @@ class App extends Component {
     super(props);
     this.myInput = React.createRef();
     this.state = {
+      todosAppear: true,
       textInput: "",
       editTextInput: "",
       nowEditing: null,
@@ -171,6 +172,12 @@ class App extends Component {
   };
 
   render() {
+    const {
+      textInput,
+      editTextInput,
+      filterCompleted,
+      todosAppear
+    } = this.state;
     return (
       <JssProvider jss={jss} generateClassName={generateClassName}>
         <div className="App">
@@ -180,28 +187,24 @@ class App extends Component {
               style={{ borderRadius: "5px" }}
               textInput={this.textInput}
               addItem={this.addItem}
-              textInputValue={this.state.textInput}
+              textInputValue={textInput}
             />
-            <CSSTransitionGroup
-              transitionName="example"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={1000}
-            >
-              <TodoList
-                todos={this.state.todos}
-                todoComplete={this.todoComplete}
-                deleteTodo={this.deleteTodo}
-                deleteCompleted={this.deleteCompleted}
-                toggleEdit={this.toggleEdit}
-                textInputValue={this.state.textInput}
-                updateItem={this.updateItem}
-                textInput={this.state.textInput}
-                myInput={this.myInput}
-                getFocus={this.getFocus}
-                editTextInput={this.state.editTextInput}
-                filterCompleted={this.state.filterCompleted}
-              />
-            </CSSTransitionGroup>
+
+            <TodoList
+              todos={this.state.todos}
+              todoComplete={this.todoComplete}
+              deleteTodo={this.deleteTodo}
+              deleteCompleted={this.deleteCompleted}
+              toggleEdit={this.toggleEdit}
+              textInputValue={textInput}
+              updateItem={this.updateItem}
+              textInput={textInput}
+              myInput={this.myInput}
+              getFocus={this.getFocus}
+              editTextInput={editTextInput}
+              filterCompleted={filterCompleted}
+            />
+
             <div className="filtersContainer">
               <div
                 onClick={this.filterCompleted}

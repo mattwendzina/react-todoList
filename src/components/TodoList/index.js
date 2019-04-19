@@ -1,5 +1,6 @@
 import React from "react";
 import TodoItem from "../TodoItem";
+import CSS from "./todoList.module.css";
 
 const TodoList = props => {
   const {
@@ -17,7 +18,7 @@ const TodoList = props => {
   } = props;
   return (
     <>
-      <form>
+      <form className={CSS.form}>
         <TodoItem
           todos={todos}
           todoComplete={todoComplete}

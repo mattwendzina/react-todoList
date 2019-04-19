@@ -1,11 +1,11 @@
 import React from "react";
 
-import CSS from "./todoItem.module.css";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import "./todoItem.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-
 library.add(faCheckCircle, faTrash);
 
 class TodoItem extends React.Component {
@@ -30,78 +30,84 @@ class TodoItem extends React.Component {
     } = this.props;
 
     if (!filterCompleted) {
-      return todos.map((todoItem, idx) => {
-        return (
-          <li key={todoItem.id}>
-            <div
-              className={
-                !todoItem.selected ? CSS.showTodoItem : CSS.hideTodoItem
-              }
-            >
-              <div className={CSS.completeContainer}>
-                <FontAwesomeIcon
-                  icon="check-circle"
-                  className={
-                    todoItem.complete
-                      ? CSS.completeButton
-                      : CSS.incompleteButton
-                  }
-                  onClick={() => todoComplete(idx)}
-                />
-              </div>
-
-              <label
-                className={
-                  todoItem.complete ? CSS.itemComplete : CSS.itemIncomplete
-                }
-                onDoubleClick={event => {
-                  toggleEdit(event, idx);
-                  getFocus(event);
-                  this.setState(() => ({
-                    changeItemWithEnterKey: false
-                  }));
-                }}
-              >
-                {todoItem.todo}
-              </label>
-
-              <FontAwesomeIcon
-                style={{ color: "gainsboro" }}
-                icon={"trash"}
-                className={CSS.deleteButton}
-                color="secondary"
-                variant="raised"
-                onClick={() => deleteTodo(idx)}
-              />
-            </div>
-            <input
-              className={
-                todoItem.selected ? CSS.editTextDisplay : CSS.editTextHidden
-              }
-              ref={myInput}
-              value={editTextInput}
-              onChange={event => {
-                updateItem(event, idx);
-              }}
-              onKeyDown={event => {
-                if (event.key === "Enter") {
-                  this.setState(state => ({
-                    changeItemWithEnterKey: !state.changeItemWithEnterKey
-                  }));
-                }
-                toggleEdit(event, idx);
-              }}
-              onBlur={
-                !this.state.changeItemWithEnterKey
-                  ? event => {
-                      toggleEdit(event, idx);
+      return (
+        <TransitionGroup>
+          {todos.map((todoItem, idx) => {
+            return (
+              <CSSTransition key={todoItem.id} classNames="move" timeout={600}>
+                <li key={todoItem.id}>
+                  <div
+                    className={
+                      !todoItem.selected ? "showTodoItem" : "hideTodoItem"
                     }
-                  : null
-              }
-            />
-          </li>
-        );
-      });
+                  >
+                    <div className="completeContainer">
+                      <FontAwesomeIcon
+                        icon="check-circle"
+                        className={
+                          todoItem.complete
+                            ? "completeButton"
+                            : "incompleteButton"
+                        }
+                        onClick={() => todoComplete(idx)}
+                      />
+                    </div>
+
+                    <label
+                      className={
+                        todoItem.complete ? "itemComplete" : "itemIncomplete"
+                      }
+                      onDoubleClick={event => {
+                        toggleEdit(event, idx);
+                        getFocus(event);
+                        this.setState(() => ({
+                          changeItemWithEnterKey: false
+                        }));
+                      }}
+                    >
+                      {todoItem.todo}
+                    </label>
+
+                    <FontAwesomeIcon
+                      style={{ color: "gainsboro" }}
+                      icon={"trash"}
+                      className="deleteButton"
+                      color="secondary"
+                      variant="raised"
+                      onClick={() => deleteTodo(idx)}
+                    />
+                  </div>
+                  <input
+                    className={
+                      todoItem.selected ? "editTextDisplay" : "editTextHidden"
+                    }
+                    ref={myInput}
+                    value={editTextInput}
+                    onChange={event => {
+                      updateItem(event, idx);
+                    }}
+                    onKeyDown={event => {
+                      if (event.key === "Enter") {
+                        this.setState(state => ({
+                          changeItemWithEnterKey: !state.changeItemWithEnterKey
+                        }));
+                      }
+                      toggleEdit(event, idx);
+                    }}
+                    onBlur={
+                      !this.state.changeItemWithEnterKey
+                        ? event => {
+                            toggleEdit(event, idx);
+                          }
+                        : null
+                    }
+                  />
+                </li>
+              </CSSTransition>
+            );
+          })}
+        </TransitionGroup>
+      );
     } else {
       const filtered = todos.filter(todoItem => !todoItem.complete);
 
@@ -109,17 +115,13 @@ class TodoItem extends React.Component {
         return (
           <li key={todoItem.id}>
             <div
-              className={
-                !todoItem.selected ? CSS.showTodoItem : CSS.hideTodoItem
-              }
+              className={!todoItem.selected ? "showTodoItem" : "hideTodoItem"}
             >
-              <div className={CSS.completeContainer}>
+              <div className="completeContainer">
                 <FontAwesomeIcon
                   icon="check-circle"
                   className={
-                    todoItem.complete
-                      ? CSS.completeButton
-                      : CSS.incompleteButton
+                    todoItem.complete ? "completeButton" : "incompleteButton"
                   }
                   onClick={() => todoComplete(idx)}
                 />
@@ -127,7 +129,7 @@ class TodoItem extends React.Component {
 
               <label
                 className={
-                  todoItem.complete ? CSS.itemComplete : CSS.itemIncomplete
+                  todoItem.complete ? "itemComplete" : "itemIncomplete"
                 }
                 onDoubleClick={event => {
                   toggleEdit(event, idx);
@@ -143,7 +145,7 @@ class TodoItem extends React.Component {
               <FontAwesomeIcon
                 style={{ color: "gainsboro" }}
                 icon={"trash"}
-                className={CSS.deleteButton}
+                className="deleteButton"
                 color="secondary"
                 variant="raised"
                 onClick={() => deleteTodo(idx)}
@@ -151,7 +153,7 @@ class TodoItem extends React.Component {
             </div>
             <input
               className={
-                todoItem.selected ? CSS.editTextDisplay : CSS.editTextHidden
+                todoItem.selected ? "editTextDisplay" : "editTextHidden"
               }
               ref={myInput}
               value={editTextInput}

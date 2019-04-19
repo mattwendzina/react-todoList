@@ -23,6 +23,10 @@ ul {
   display: none;
 }
 
+li {
+  text-align: center;
+}
+
 .editTextDisplay {
   display: inline-block;
   color: red;
@@ -105,4 +109,23 @@ button {
 
 .showTodoItem:hover .deleteButton {
   opacity: 1;
+}
+
+.move-enter {
+  transform: scale(0);
+}
+
+.move-enter-active {
+  transform: scale(1);
+  transition: all 600ms ease-in-out;
+}
+
+.move-exit {
+  transform: scale(1);
+}
+
+.move-exit-active {
+  transform: scale(0);
+
+  transition: all 600ms ease-in;
 }

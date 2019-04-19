@@ -8,6 +8,7 @@ import Navbar from "../Navbar";
 import { create } from "jss";
 import JssProvider from "react-jss/lib/JssProvider";
 import { createGenerateClassName, jssPreset } from "@material-ui/core/styles";
+import { CSSTransitionGroup } from "react-transition-group";
 
 // This function enables material UI to be moved higher in the html <head> to allow for custom CSS to take priority
 const generateClassName = createGenerateClassName();
@@ -41,7 +42,6 @@ class App extends Component {
   }
 
   textInput = e => {
-    // console.log(e.target.value);
     const { value } = e.target;
     this.setState(() => ({
       textInput: value
@@ -126,6 +126,17 @@ class App extends Component {
     );
   };
 
+  deleteCompleted = () => {
+    const incomplete = this.state.todos.filter(todo => !todo.complete);
+    console.log(incomplete);
+    this.setState(
+      state => ({
+        todos: [...incomplete]
+      }),
+      this.updateLocalStorage
+    );
+  };
+
   getFocus = event => {
     // listItem grabs the input element to ensure the correct element gets focus() applied
     const listItem = event.target.parentNode.parentNode.childNodes[1];
@@ -137,13 +148,16 @@ class App extends Component {
 
   todoComplete = idx => {
     const toChange = this.state.todos[idx];
-    this.setState(state => ({
-      todos: [
-        ...state.todos.slice(0, idx),
-        { ...toChange, complete: !toChange.complete },
-        ...state.todos.slice(idx + 1)
-      ]
-    }));
+    this.setState(
+      state => ({
+        todos: [
+          ...state.todos.slice(0, idx),
+          { ...toChange, complete: !toChange.complete },
+          ...state.todos.slice(idx + 1)
+        ]
+      }),
+      this.updateLocalStorage
+    );
   };
 
   filterCompleted = () => {
@@ -161,26 +175,47 @@ class App extends Component {
       <JssProvider jss={jss} generateClassName={generateClassName}>
         <div className="App">
           <Navbar />
-          <Input
-            style={{ borderRadius: "5px" }}
-            textInput={this.textInput}
-            addItem={this.addItem}
-            textInputValue={this.state.textInput}
-          />
-          <TodoList
-            todos={this.state.todos}
-            todoComplete={this.todoComplete}
-            deleteTodo={this.deleteTodo}
-            toggleEdit={this.toggleEdit}
-            textInputValue={this.state.textInput}
-            updateItem={this.updateItem}
-            textInput={this.state.textInput}
-            myInput={this.myInput}
-            getFocus={this.getFocus}
-            editTextInput={this.state.editTextInput}
-            filterCompleted={this.state.filterCompleted}
-          />
-          <button onClick={this.filterCompleted}>Filter Completed</button>
+          <div className="todolistContainer">
+            <Input
+              style={{ borderRadius: "5px" }}
+              textInput={this.textInput}
+              addItem={this.addItem}
+              textInputValue={this.state.textInput}
+            />
+            <CSSTransitionGroup
+              transitionName="example"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={1000}
+            >
+              <TodoList
+                todos={this.state.todos}
+                todoComplete={this.todoComplete}
+                deleteTodo={this.deleteTodo}
+                deleteCompleted={this.deleteCompleted}
+                toggleEdit={this.toggleEdit}
+                textInputValue={this.state.textInput}
+                updateItem={this.updateItem}
+                textInput={this.state.textInput}
+                myInput={this.myInput}
+                getFocus={this.getFocus}
+                editTextInput={this.state.editTextInput}
+                filterCompleted={this.state.filterCompleted}
+              />
+            </CSSTransitionGroup>
+            <div className="filtersContainer">
+              <div
+                onClick={this.filterCompleted}
+                className={
+                  this.state.filterCompleted ? "showIncomplete" : "incomplete"
+                }
+              >
+                Incompleted
+              </div>
+              <div onClick={this.deleteCompleted} className="deleteCompleted">
+                Delete Completed
+              </div>
+            </div>
+          </div>
         </div>
       </JssProvider>
     );

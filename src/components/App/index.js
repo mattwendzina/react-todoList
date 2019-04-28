@@ -121,7 +121,7 @@ class App extends Component {
   deleteTodo = idx => {
     this.setState(
       state => ({
-        todos: [...state.todos.slice(0, idx), ...state.todos.slice(idx + 1)]
+        todos: state.todos.filter((_, index) => index !== idx)
       }),
       this.updateLocalStorage
     );
